@@ -1,39 +1,95 @@
 <!DOCTYPE html>
 <html>
- 
-<body>
+<head>
+    <title>Guess the Color Game</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        #plantImage {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #plantImage:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-light">
 
-<h2>Getting input</h2>
+    <div class="container mt-5 game-container">
+        <h1 class="text-center text-primary mb-4">Guess the Color - Sneha Bojja</h1>
 
-<form>
-    <label for="form1_age">What is your age </label>
-    <input type ="number" id="form1_age" name="form1_age" min=10 max=50 step=2 value=30> <br>
+        <!-- Game Form -->
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <form class="mb-4 p-3 border rounded bg-white shadow-sm">
+                    <div class="mb-3">
+                        <label for="secret_color" class="form-label">Guess the color (Hidden)</label>
+                        <input type="password" id="secret_color" class="form-control" value="Red">
+                    </div>
 
-    <label for="form1_nick">What is your nickname </label>
-    <input type ="text" id="form1_nick" name="form1_nick" autofocus> <br>
+                    <div class="mb-3">
+                        <label for="guess_color" class="form-label">Enter your guess</label>
+                        <input type="text" id="guess_color" class="form-control" placeholder="Guess the color">
+                    </div>
 
-    <input type="button" onclick="resolveForm()" value="Get values from form">
-</form>
+                    <input type="button" class="btn btn-primary w-100" onclick="processColor()" value="Check the Color">
+                </form>
 
+                <p id="result" class="text-center fs-5 text-success">Attempts: 0 | Wrong: 0</p>
 
-<p id="result">This text will be replaced </p>
+                <!-- Image for interactive change -->
+                <div class="text-center">
+                    <img id="plantImage" src="plant1.jpg" class="img-fluid rounded shadow" width="200" height="200" alt="Click to change plant" onclick="nextImage()">
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script> 
+    <script>
+        let attempts = 0;
+        let wrong = 0;
 
-function resolveForm (){
-    console.log("Getting form values")
-    age = document.getElementById("form1_age").value
-    nick = document.getElementById("form1_nick").value
-    confirmed = confirm("Are these the values? "+age+" and "+nick)
-    
-    out = document.getElementById("result")
-    if(confirmed){
-        out.innerHTML = "Values were confirmed"
-    } else {
-        out.innerHTML = "Values were not confirmed"
-    }
-}
-</script>
+        function processColor() {
+            const secretColor = document.getElementById("secret_color").value;
+            const guessedColor = document.getElementById("guess_color").value.trim();
 
+            attempts++;
+            if (guessedColor.toLowerCase() !== secretColor.toLowerCase()) {
+                wrong++;
+                alert("That was not it. Try again!");
+            } else {
+                alert("You got it right!");
+            }
+
+            document.getElementById("result").innerHTML = `Attempts: ${attempts} | Wrong: ${wrong}`;
+        }
+
+        let showing = 1;
+
+        function nextImage() {
+            switch (showing) {
+                case 1:
+                    document.getElementById("plantImage").src = "plant2.jpg";
+                    showing = 2;
+                    break;
+                case 2:
+                    document.getElementById("plantImage").src = "plant3.jpg";
+                    showing = 3;
+                    break;
+                case 3:
+                    document.getElementById("plantImage").src = "plant1.jpg";
+                    showing = 1;
+                    break;
+            }
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
